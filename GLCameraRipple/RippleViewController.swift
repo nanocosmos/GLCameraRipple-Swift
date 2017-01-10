@@ -478,7 +478,7 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
         #endif
         
         glGetShaderiv(shader.pointee, GLenum(GL_COMPILE_STATUS), &status)
-        guard status != 0 else {
+        guard status == GL_TRUE else {
             glDeleteShader(shader.pointee)
             return false
         }
