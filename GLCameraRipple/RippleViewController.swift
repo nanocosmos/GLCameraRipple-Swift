@@ -70,7 +70,7 @@ private let ATTRIB_VERTEX = 0
 private let ATTRIB_TEXCOORD = 1
 private let NUM_ATTRIBUTES = 2
 
-class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBufferDelegate, nanostreamEventListener {
     private var _program: GLuint = 0
     
     private var _positionVBO: GLuint = 0
@@ -93,6 +93,71 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
     
     private var _session: AVCaptureSession?
     private var _videoTextureCache: CVOpenGLESTextureCache?
+    
+    var stream:nanostreamAVC? = nil
+    var customSession:NSXCustomCaptureSession? = nil
+    
+    func streamInit() {
+        // nanoStream configuration settings
+        let nAVCSettings:nanostreamAVCSettings = nanostreamAVCSettings()
+        
+        // RTMP Stream URL
+        nAVCSettings.url = "rtmp://ws2.nanocosmos.de/live"
+        nAVCSettings.streamId = "oar312"
+        
+        let videoResolution:nanoStreamResolution = nanoStreamResolution.Resolution640x480
+        let cropMode:nanostreamCropMode = nanostreamCropMode.NoCrop
+        let frameRate:Int = 30
+        let keyFrameDistance:Float = 2.0
+        let h264Level:nanoStreamH264ProfileLevel = nanoStreamH264ProfileLevel.MainAutoLevel
+        let streamType:NSXStreamType = NSXStreamType.videoOnly
+        let abcMode:AdaptiveBitrateControlMode = AdaptiveBitrateControlMode.modeFrameDrop
+        
+        // H264 Video Encoding Bitrate
+        // Note: this is the average bitrate used
+        // When using adaptive bitrate, it can decrease down to 50k and increase to 1.5xbitrate
+        // If automatic is selected in settings, the bitrate determined over the bandwidth ckeck will used
+        nAVCSettings.videoBitrate = 500
+        
+        // Camera and stream resolution
+        nAVCSettings.videoResolution = videoResolution
+        nAVCSettings.cropMode = cropMode
+        nAVCSettings.keyFrameInterval = keyFrameDistance
+        nAVCSettings.framerate = frameRate
+        
+        // H264 Encoder Profile (Baseline/Main)
+        nAVCSettings.h264Level = h264Level
+        
+        // Video+Audio or Video-only or Audio-only
+        nAVCSettings.streamType = streamType
+        
+        // Front/Back Cam
+        nAVCSettings.frontCamera = false
+        
+        let nanostreamAvcVersion:Int32 = nanostreamAVC.getVersion()
+        print(String(format:"nanoStream Version: %i %i", nanostreamAvcVersion, NANOSTREAM_AVC_VERSION))
+        
+        if nanostreamAvcVersion != NANOSTREAM_AVC_VERSION {
+            NSLog("nanoStream Version Mismatch - need recompile - %d %d", nanostreamAvcVersion, NANOSTREAM_AVC_VERSION)
+        }
+        
+        self.customSession = NSXCustomCaptureSession()
+        
+        // nanoStream Init Encoder with the camera view
+        self.stream = nanostreamAVC(session: self.customSession, settings: nAVCSettings, errorListener: self)
+        
+        // Set Loglevel
+        self.stream?.setLogLevel(nanostreamLogLevel.LogLevelMinimal)
+        
+        // nanoStream License
+        self.stream?.setLicense(myLicenseKey)
+        
+        // Adaptive Bitrate ON (Full)
+        self.stream?.setAdaptiveBitrateControlMode(abcMode)
+    }
+    
+    func nanostreamEventHandler(withType: nanostreamEvent, andLevel level: Int32, andDescription description: String!) {
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -195,6 +260,14 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
                                   textureHeight: Int(_textureHeight))
             
             self.setupBuffers()
+            
+            self.streamInit()
+            
+            self.stream?.start({ (err) in
+                if err != NSXError.none {
+                    NSLog("stream start failed")
+                }
+            })
         }
         
         self.cleanUpTextures()
@@ -245,6 +318,7 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
         glBindTexture(CVOpenGLESTextureGetTarget(_chromaTexture!), CVOpenGLESTextureGetName(_chromaTexture!))
         glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE))
         glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE))
+        self.customSession?.supplyCMSampleBufferRef(pixelBuffer)
     }
     
     private func setupAVCapture() {
@@ -284,7 +358,7 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
         //-- Set to YUV420.
         dataOutput.videoSettings = [
             kCVPixelBufferPixelFormatTypeKey as NSString: // Necessary for manual preview
-                NSNumber(value: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)]
+                NSNumber(value: kCVPixelFormatType_32BGRA)]//NSNumber(value: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)]
         
         // Set dispatch to be on the main thread so OpenGL can do things with the data
         dataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)

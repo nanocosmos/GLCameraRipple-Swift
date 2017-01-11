@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EC921E41E24ECB50067C960 /* libnanostreamAVC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC921E31E24ECB50067C960 /* libnanostreamAVC.a */; };
+		3EC921EC1E24F5560067C960 /* NSXCustomCaptureSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC921E91E24F5560067C960 /* NSXCustomCaptureSession.m */; };
+		3EC921ED1E24F5560067C960 /* NSXTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC921EB1E24F5560067C960 /* NSXTimer.m */; };
+		3EC921EF1E2504ED0067C960 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC921EE1E2504ED0067C960 /* libstdc++.tbd */; };
+		3EC921F11E2505070067C960 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC921F01E2505070067C960 /* VideoToolbox.framework */; };
+		3EC921F31E25050F0067C960 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC921F21E25050F0067C960 /* AudioToolbox.framework */; };
+		3EC921F51E25053A0067C960 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC921F41E25053A0067C960 /* Accelerate.framework */; };
+		3EC921F71E25054B0067C960 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC921F61E25054B0067C960 /* SystemConfiguration.framework */; };
 		B6198C4916C05C04000B9C73 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B6198C4816C05C04000B9C73 /* Default-568h@2x.png */; };
 		B6388B2C141AB58300DA02FB /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = B6388B26141AB58300DA02FB /* Icon-72.png */; };
 		B6388B2D141AB58300DA02FB /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = B6388B27141AB58300DA02FB /* Icon-Small-50.png */; };
@@ -31,6 +39,22 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3EC921DE1E24EC960067C960 /* nanoLicenseConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanoLicenseConfig.h; sourceTree = "<group>"; };
+		3EC921DF1E24EC960067C960 /* nanostreamAVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanostreamAVC.h; sourceTree = "<group>"; };
+		3EC921E01E24EC960067C960 /* nanostreamAVCExtendedCaptureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanostreamAVCExtendedCaptureSession.h; sourceTree = "<group>"; };
+		3EC921E11E24EC960067C960 /* nanostreamAVCHLSCaptureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanostreamAVCHLSCaptureSession.h; sourceTree = "<group>"; };
+		3EC921E21E24EC960067C960 /* nanostreamAVCRtmpSourceCaptureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nanostreamAVCRtmpSourceCaptureSession.h; sourceTree = "<group>"; };
+		3EC921E31E24ECB50067C960 /* libnanostreamAVC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnanostreamAVC.a; path = lib/libnanostreamAVC.a; sourceTree = "<group>"; };
+		3EC921E51E24EF320067C960 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bridge.h; sourceTree = "<group>"; };
+		3EC921E81E24F5560067C960 /* NSXCustomCaptureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXCustomCaptureSession.h; sourceTree = "<group>"; };
+		3EC921E91E24F5560067C960 /* NSXCustomCaptureSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSXCustomCaptureSession.m; sourceTree = "<group>"; };
+		3EC921EA1E24F5560067C960 /* NSXTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXTimer.h; sourceTree = "<group>"; };
+		3EC921EB1E24F5560067C960 /* NSXTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSXTimer.m; sourceTree = "<group>"; };
+		3EC921EE1E2504ED0067C960 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
+		3EC921F01E2505070067C960 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		3EC921F21E25050F0067C960 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		3EC921F41E25053A0067C960 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		3EC921F61E25054B0067C960 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B6198C4816C05C04000B9C73 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B62EA05A140EF97B00074406 /* ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
 		B6388B26141AB58300DA02FB /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
@@ -63,6 +87,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EC921F71E25054B0067C960 /* SystemConfiguration.framework in Frameworks */,
+				3EC921F51E25053A0067C960 /* Accelerate.framework in Frameworks */,
+				3EC921F31E25050F0067C960 /* AudioToolbox.framework in Frameworks */,
+				3EC921F11E2505070067C960 /* VideoToolbox.framework in Frameworks */,
+				3EC921EF1E2504ED0067C960 /* libstdc++.tbd in Frameworks */,
+				3EC921E41E24ECB50067C960 /* libnanostreamAVC.a in Frameworks */,
 				B66E3E3313E9E79C00D2ACF0 /* UIKit.framework in Frameworks */,
 				B66E3E3513E9E79C00D2ACF0 /* Foundation.framework in Frameworks */,
 				B66E3E3713E9E79C00D2ACF0 /* GLKit.framework in Frameworks */,
@@ -76,6 +106,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3EC921DD1E24EC960067C960 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				3EC921E51E24EF320067C960 /* Bridge.h */,
+				3EC921DE1E24EC960067C960 /* nanoLicenseConfig.h */,
+				3EC921DF1E24EC960067C960 /* nanostreamAVC.h */,
+				3EC921E01E24EC960067C960 /* nanostreamAVCExtendedCaptureSession.h */,
+				3EC921E11E24EC960067C960 /* nanostreamAVCHLSCaptureSession.h */,
+				3EC921E21E24EC960067C960 /* nanostreamAVCRtmpSourceCaptureSession.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		3EC921E71E24F5560067C960 /* extension */ = {
+			isa = PBXGroup;
+			children = (
+				3EC921E81E24F5560067C960 /* NSXCustomCaptureSession.h */,
+				3EC921E91E24F5560067C960 /* NSXCustomCaptureSession.m */,
+				3EC921EA1E24F5560067C960 /* NSXTimer.h */,
+				3EC921EB1E24F5560067C960 /* NSXTimer.m */,
+			);
+			path = extension;
+			sourceTree = "<group>";
+		};
 		B6388B25141AB58300DA02FB /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -93,8 +147,10 @@
 		B66E3E2313E9E79C00D2ACF0 = {
 			isa = PBXGroup;
 			children = (
+				3EC921DD1E24EC960067C960 /* include */,
 				D7BA89231D802E350089F925 /* README.md */,
 				B62EA05A140EF97B00074406 /* ReadMe.txt */,
+				3EC921E71E24F5560067C960 /* extension */,
 				B66E3E3A13E9E79C00D2ACF0 /* GLCameraRipple */,
 				B66E3E3113E9E79C00D2ACF0 /* Frameworks */,
 				B66E3E2F13E9E79C00D2ACF0 /* Products */,
@@ -112,6 +168,12 @@
 		B66E3E3113E9E79C00D2ACF0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3EC921F61E25054B0067C960 /* SystemConfiguration.framework */,
+				3EC921F41E25053A0067C960 /* Accelerate.framework */,
+				3EC921F21E25050F0067C960 /* AudioToolbox.framework */,
+				3EC921F01E2505070067C960 /* VideoToolbox.framework */,
+				3EC921EE1E2504ED0067C960 /* libstdc++.tbd */,
+				3EC921E31E24ECB50067C960 /* libnanostreamAVC.a */,
 				B69AAFE413FC972A00B7125C /* CoreMedia.framework */,
 				B69AAFE213FC965400B7125C /* CoreVideo.framework */,
 				B69AAFDF13FC961F00B7125C /* AVFoundation.framework */,
@@ -184,7 +246,7 @@
 				LastUpgradeCheck = 0800;
 				TargetAttributes = {
 					B66E3E2D13E9E79C00D2ACF0 = {
-						DevelopmentTeam = 23BTWUM7W8;
+						DevelopmentTeam = F7L54X36ZY;
 						LastSwiftMigration = 0800;
 					};
 				};
@@ -232,6 +294,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EC921ED1E24F5560067C960 /* NSXTimer.m in Sources */,
+				3EC921EC1E24F5560067C960 /* NSXCustomCaptureSession.m in Sources */,
 				D78709CA1D7CD17A0046ECA1 /* RippleModel.swift in Sources */,
 				D7AE5DC91D7C0D6900302CBF /* AppDelegate.swift in Sources */,
 				D78709C81D7CD03D0046ECA1 /* RippleViewController.swift in Sources */,
@@ -346,14 +410,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 23BTWUM7W8;
+				DEVELOPMENT_TEAM = F7L54X36ZY;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GLCameraRipple/GLCameraRipple-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "GLCameraRipple/GLCameraRipple-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.nanocosmos.GLCameraRipple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/include/Bridge.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
@@ -364,14 +433,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 23BTWUM7W8;
+				DEVELOPMENT_TEAM = F7L54X36ZY;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GLCameraRipple/GLCameraRipple-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "GLCameraRipple/GLCameraRipple-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.nanocosmos.GLCameraRipple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/include/Bridge.h";
 				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
