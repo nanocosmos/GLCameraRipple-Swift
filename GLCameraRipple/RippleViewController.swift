@@ -70,6 +70,8 @@ private let ATTRIB_VERTEX = 0
 private let ATTRIB_TEXCOORD = 1
 private let NUM_ATTRIBUTES = 2
 
+private let USE_RGB = 1
+
 class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBufferDelegate, nanostreamEventListener {
     private var _program: GLuint = 0
     
@@ -275,49 +277,74 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
         // CVOpenGLESTextureCacheCreateTextureFromImage will create GLES texture
         // optimally from CVImageBufferRef.
         
-        // Y-plane
-        glActiveTexture(GLenum(GL_TEXTURE0))
-        var err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+        if USE_RGB != 1 {
+            // Y-plane
+            glActiveTexture(GLenum(GL_TEXTURE0))
+            var err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                                                   videoTextureCache,
+                                                                   pixelBuffer,
+                                                                   nil,
+                                                                   GLenum(GL_TEXTURE_2D),
+                                                                   GL_RED_EXT,
+                                                                   GLsizei(_textureWidth),
+                                                                   GLsizei(_textureHeight),
+                                                                   GLenum(GL_RED_EXT),
+                                                                   GLenum(GL_UNSIGNED_BYTE),
+                                                                   0,
+                                                                   &_lumaTexture)
+            if err != 0 {
+                NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage \(err)");
+            }
+            
+            glBindTexture(CVOpenGLESTextureGetTarget(_lumaTexture!), CVOpenGLESTextureGetName(_lumaTexture!))
+            glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE))
+            glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE))
+            
+            // UV-plane
+            glActiveTexture(GLenum(GL_TEXTURE1))
+            err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
                                                                videoTextureCache,
                                                                pixelBuffer,
                                                                nil,
                                                                GLenum(GL_TEXTURE_2D),
-                                                               GL_RED_EXT,
-                                                               GLsizei(_textureWidth),
-                                                               GLsizei(_textureHeight),
-                                                               GLenum(GL_RED_EXT),
+                                                               GL_RG_EXT,
+                                                               GLsizei(_textureWidth/2),
+                                                               GLsizei(_textureHeight/2),
+                                                               GLenum(GL_RG_EXT),
                                                                GLenum(GL_UNSIGNED_BYTE),
-                                                               0,
-                                                               &_lumaTexture)
-        if err != 0 {
-            NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage \(err)");
+                                                               1,
+                                                               &_chromaTexture)
+            if err != 0 {
+                NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage \(err)")
+            }
+            
+            glBindTexture(CVOpenGLESTextureGetTarget(_chromaTexture!), CVOpenGLESTextureGetName(_chromaTexture!))
+            glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE))
+            glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE))
+        }
+        else {
+            glActiveTexture(GLenum(GL_TEXTURE0))
+            let err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                                                   videoTextureCache,
+                                                                   pixelBuffer,
+                                                                   nil,
+                                                                   GLenum(GL_TEXTURE_2D),
+                                                                   GL_RGBA,
+                                                                   GLsizei(_textureWidth),
+                                                                   GLsizei(_textureHeight),
+                                                                   GLenum(GL_BGRA),
+                                                                   GLenum(GL_UNSIGNED_BYTE),
+                                                                   0,
+                                                                   &_lumaTexture)
+            if err != 0 {
+                NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage \(err)");
+            }
+            
+            glBindTexture(CVOpenGLESTextureGetTarget(_lumaTexture!), CVOpenGLESTextureGetName(_lumaTexture!))
+            glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE))
+            glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE))
         }
         
-        glBindTexture(CVOpenGLESTextureGetTarget(_lumaTexture!), CVOpenGLESTextureGetName(_lumaTexture!))
-        glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE))
-        glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE))
-        
-        // UV-plane
-        glActiveTexture(GLenum(GL_TEXTURE1))
-        err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                           videoTextureCache,
-                                                           pixelBuffer,
-                                                           nil,
-                                                           GLenum(GL_TEXTURE_2D),
-                                                           GL_RG_EXT,
-                                                           GLsizei(_textureWidth/2),
-                                                           GLsizei(_textureHeight/2),
-                                                           GLenum(GL_RG_EXT),
-                                                           GLenum(GL_UNSIGNED_BYTE),
-                                                           1,
-                                                           &_chromaTexture)
-        if err != 0 {
-            NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage \(err)")
-        }
-        
-        glBindTexture(CVOpenGLESTextureGetTarget(_chromaTexture!), CVOpenGLESTextureGetName(_chromaTexture!))
-        glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE))
-        glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE))
         self.customSession?.supplyCMSampleBufferRef(pixelBuffer)
     }
     
@@ -355,10 +382,17 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
         let dataOutput = AVCaptureVideoDataOutput()
         dataOutput.alwaysDiscardsLateVideoFrames = true // Probably want to set this to NO when recording
         
-        //-- Set to YUV420.
-        dataOutput.videoSettings = [
-            kCVPixelBufferPixelFormatTypeKey as NSString: // Necessary for manual preview
-                NSNumber(value: kCVPixelFormatType_32BGRA)]//NSNumber(value: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)]
+        if USE_RGB != 1 {
+            //-- Set to YUV420.
+            dataOutput.videoSettings = [
+                kCVPixelBufferPixelFormatTypeKey as NSString: // Necessary for manual preview
+                    NSNumber(value: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)]
+        }
+        else {
+            dataOutput.videoSettings = [
+                kCVPixelBufferPixelFormatTypeKey as NSString: // Necessary for manual preview
+                    NSNumber(value: kCVPixelFormatType_32BGRA)]
+        }
         
         // Set dispatch to be on the main thread so OpenGL can do things with the data
         dataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
@@ -403,7 +437,10 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
         glUseProgram(_program)
         
         glUniform1i(uniforms[UNIFORM_Y], 0)
-        glUniform1i(uniforms[UNIFORM_UV], 1)
+        
+        if USE_RGB != 1 {
+            glUniform1i(uniforms[UNIFORM_UV], 1)
+        }
     }
     
     private func tearDownGL() {
@@ -509,9 +546,14 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
             return false
         }
         
-        // Get uniform locations.
-        uniforms[UNIFORM_Y] = glGetUniformLocation(_program, "SamplerY")
-        uniforms[UNIFORM_UV] = glGetUniformLocation(_program, "SamplerUV")
+        if USE_RGB != 1 {
+            // Get uniform locations.
+            uniforms[UNIFORM_Y] = glGetUniformLocation(_program, "SamplerY")
+            uniforms[UNIFORM_UV] = glGetUniformLocation(_program, "SamplerUV")
+        }
+        else {
+            uniforms[UNIFORM_Y] = glGetUniformLocation(_program, "sampler")
+        }
         
         // Release vertex and fragment shaders.
         if vertShader != 0 {
