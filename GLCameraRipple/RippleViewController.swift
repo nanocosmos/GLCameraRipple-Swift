@@ -85,6 +85,8 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
     private var _textureHeight: CGFloat = 0.0
     private var _meshFactor: Int = 0
     
+    private var _frameBufferHandle: GLuint = 0
+    
     private var _context: EAGLContext!
     private var _ripple: RippleModel?
     
@@ -343,7 +345,14 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
             glBindTexture(CVOpenGLESTextureGetTarget(_lumaTexture!), CVOpenGLESTextureGetName(_lumaTexture!))
             glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GLfloat(GL_CLAMP_TO_EDGE))
             glTexParameterf(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GLfloat(GL_CLAMP_TO_EDGE))
+            
+            glBindFramebuffer(1, _frameBufferHandle)
+            glFramebufferTexture2D(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0),  CVOpenGLESTextureGetTarget(_lumaTexture!), CVOpenGLESTextureGetName(_lumaTexture!), 0)
         }
+        
+        glFinish()
+        
+        cleanUpTextures()
         
         self.customSession?.supplyCMSampleBufferRef(pixelBuffer)
     }
@@ -427,6 +436,10 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
         
         glEnableVertexAttribArray(GLuint(ATTRIB_TEXCOORD))
         glVertexAttribPointer(GLuint(ATTRIB_TEXCOORD), 2, GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(2*MemoryLayout<GLfloat>.size), nil)
+        
+        glGenFramebuffers(1, &_frameBufferHandle)
+        //glBindFramebuffer(GLenum(GL_FRAMEBUFFER), _frameBufferHandle)
+        
     }
     
     private func setupGL() {
@@ -449,6 +462,7 @@ class RippleViewController: GLKViewController, AVCaptureVideoDataOutputSampleBuf
         glDeleteBuffers(1, &_positionVBO)
         glDeleteBuffers(1, &_texcoordVBO)
         glDeleteBuffers(1, &_indexVBO)
+        glDeleteFramebuffers(1, &_frameBufferHandle)
         
         if _program != 0 {
             glDeleteProgram(_program)
